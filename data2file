@@ -1,0 +1,239 @@
+版权声明：本文为博主原创文章，未经博主允许不得转载。	https://blog.csdn.net/Zzwtyds/article/details/75095698
+任务代码：
+文件操作步骤：
+
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    FILE *fp;//文件指针
+    int i, d;
+ 
+    /*文件的打开*/
+    fp=fopen("data.txt","w");//fopen打开文件，这个文件可以是当前不存在的。“w”以写入的形式打开，“r”以读的形式打开
+    if(fp==NULL) //判断如果文件指针为空
+    {
+        printf("File cannot open! " );
+        exit(0);//在以0的形式退出，必须在文件开头有#include <stdlib.h>,stdlib 头文件即standard library标准库头文件
+    }
+ 
+    //写入东西
+    for(i=0; i<10; i++)
+    {
+        scanf("%d", &d);//用户出入
+        fprintf(fp,"%d\t", d);//写入指针fp，写入的东西就是刚才的用户输入的d,注意这里的fp和d没有引号
+    }
+ 
+     //关闭文件
+    fclose(fp);
+    return 0;
+}
+
+
+格式化输出：
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    FILE *fp;//文件指针
+    int i, No;
+    float salary;
+ 
+    /*文件的打开*/
+    fp=fopen("data.csv","w");//csv文件可以直接用excel打开
+    if(fp==NULL) //判断如果文件指针为空
+    {
+        printf("File cannot open! " );
+        exit(0); //在以0的形式退出，必须在文件开头有#include <stdlib.h>,stdlib 头文件即standard library标准库头文件
+    }
+ 
+    //写入东西
+    for(i=0; i<5; i++)
+    {
+        scanf("%d %f", &No,&salary);//用户出入
+        fprintf(fp,"%d,%.2f\n", No,salary);//!!!!!尤其注意这里要用逗号隔开，因为excel表里面就默认识别逗号隔开的才能分类fprintf（文件指针，格式字符串，列表）
+　　　　　　　　　　　　　　　　　　　　　　
+ } //关闭文件 fclose(fp); return 0;}
+
+
+格式化输入：
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    FILE *fp;//文件指针
+    int i, No;
+    float salary;
+ 
+    /*文件的打开*/
+    fp=fopen("data.csv","r");//改用读取的形式"r"
+    if(fp==NULL)
+    {
+        printf("File cannot open! " );
+        exit(0);
+    }
+ 
+    //从文件中读入5名员工的工号和工资，并显示
+    for(i=0; i<5; i++)
+    {
+        fscanf(fp,"%d,%f", &No,&salary);//格式化输入fscanf（文件指针，格式字符串，输入列表）
+        printf("%d\t%.2f\n", No,salary);
+    }
+ 
+     //关闭文件
+    fclose(fp);
+    return 0;
+}
+
+格式化输出字符：
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    FILE *fp;
+    char ch;//定义字符变量
+ 
+    if ((fp=fopen( "data.dat" , "w" ))==NULL)
+    {
+        printf("File cannot open!");
+        exit(0);
+    }
+    while((ch=getchar())!=EOF )//用户输入字符，EOF为C语言定义的-1即失败
+        fputc(ch,fp );//将无数的字符可以输入到文件中，使用ctrl+z结束输入
+ 
+    //关闭文件
+    fclose(fp);
+    return 0;
+}
+
+
+格式化输入字符：
+#include <stdio.h>  
+#include <stdlib.h>  
+int main()  
+{  
+    FILE *fp;  
+    char c;  
+    if ((fp=fopen( "data.dat" , "r" ))==NULL)  
+    {  
+        printf("File cannot open!");  
+        exit(0);  
+    }  
+    while((c=fgetc(fp))!=EOF)  
+        putchar(c);  
+    fclose(fp);  
+    return 0;  
+}  
+
+
+执行情况：
+文件操作步骤：
+
+
+
+
+
+
+格式化输出；
+
+
+
+
+
+格式化输入：
+
+
+
+
+
+格式化输出字符：
+
+
+
+
+
+格式化输入字符：
+
+
+
+知识总结：
+
+
+读取文件就是文件从磁盘传到内存，输出写出程序就是将文件从内存出处到磁盘保存
+
+
+
+读写文件的步骤：
+
+开头：
+stdlib 头文件即standard library标准库头文件，常用的函数如malloc()、calloc()、realloc()、free()、system()、atoi()、atol()、rand()、srand()、exit()等等。
+
+
+
+文件指针：
+在C语言中用一个指针变量指向一个文件，这个指针称为文件指针。通过文件指针就可对它所指的文件进行各种操作。
+FILE *指针变量标识符;
+
+
+
+打开文件：
+
+
+
+函数原型:FILE * fopen(const char * path,const char * mode);
+参数说明：
+
+
+参数path字符串包含欲打开的文件路径及文件名，参数mode字符串则代表着流形态。
+
+
+mode有下列几种形态字符串:
+
+
+r 以只读方式打开文件，该文件必须存在。
+
+
+r+ 以可读写方式打开文件，该文件必须存在。
+
+
+rb+ 读写打开一个二进制文件，允许读数据。
+
+
+w 打开只写文件，若文件存在则文件长度清为0，即该文件内容会消失。若文件不存在则建立该文件。
+
+
+w+ 打开可读写文件，若文件存在则文件长度清为零，即该文件内容会消失。若文件不存在则建立该文件。
+
+
+
+文件操作：
+
+格式化输出数字：
+ fprintf(fp,"%d,%.2f\n", No,salary);//!!!!!尤其注意这里要用逗号隔开，因为excel表里面就默认识别逗号隔开的才能分类fprintf（文件指针，格式字符串，列表）
+
+格式化输入数字：
+
+fscanf(fp,"%d,%f", &No,&salary);//格式化输入fscanf（文件指针，格式字符串，输入列表）
+
+格式化输出字符：
+
+fputc(ch,fp );
+
+格式化输入字符：
+
+fgetc(fp)
+
+
+
+关闭文件：
+
+ fclose(fp);
+
+
+心得体会：
+不要弄反了ｐｕｔｃｈａｒ（）和ｆｐｕｔｃ（），ｇｅｔｃｈａｒ（）和ｆｇｅｔｃ（）；
+--------------------- 
+作者：Geek宝宝 
+来源：CSDN 
+原文：https://blog.csdn.net/zzwtyds/article/details/75095698 
+版权声明：本文为博主原创文章，转载请附上博文链接！
